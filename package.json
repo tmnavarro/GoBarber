@@ -1,6 +1,0 @@
-{
-  "devDependencies": {
-    "ts-paths": "^0.1.3",
-    "tsyringe": "^4.3.0"
-  }
-}
