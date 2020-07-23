@@ -5,19 +5,19 @@ import AppError from '@shared/errors/AppError';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 
-interface Request {
+import IUsersRepository from '../repositories/IUsersRepository';
+
+interface IRequest {
   name: string;
   email: string;
   password: string;
 }
 
 class CreateUserService {
-  public async execute({ name, email, password }: Request): Promise<User> {
-    const userRepository = getRepository(User);
+  constructor(private userRepository: IUsersRepository) {}
 
-    const checkUserExists = await userRepository.findOne({
-      where: { email },
-    });
+  public async execute({ name, email, password }: IRequest): Promise<User> {
+    const checkUserExists = await this.userRepository.findByEmail(email);
 
     if (checkUserExists) {
       throw new AppError('Email addss alered used!');
@@ -25,13 +25,11 @@ class CreateUserService {
 
     const hashPassword = await hash(password, 8);
 
-    const user = userRepository.create({
+    const user = await this.userRepository.create({
       name,
       email,
       password: hashPassword,
     });
-
-    await userRepository.save(user);
 
     return user;
   }
