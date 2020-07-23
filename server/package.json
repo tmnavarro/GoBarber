@@ -5,12 +5,14 @@
   "author": "Túlio Navarro <tnavarrodev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev:server": "ts-node-dev ./src/server.ts",
+    "dev:server": "ts-node-dev -r tsconfig-paths/register ./src/shared/infra/http/server.ts",
+    "start": "ts-node ./src/shared/infra/http/server.ts",
     "build": "tsc",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/cors": "^2.8.6",
     "@types/express": "4.17.7",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/multer": "^1.4.3",
@@ -27,8 +29,10 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
     "date-fns": "^2.14.0",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.2",
     "pg": "^8.3.0",
