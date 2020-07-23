@@ -1,4 +1,3 @@
-import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 
@@ -7,6 +6,7 @@ import AppError from '@shared/errors/AppError';
 import authConfig from '@config/auth';
 
 import IUsersRepository from '../repositories/IUsersRepository';
+import IHashProvides from '../providers/HashProvider/models/IHashProvides';
 
 interface IRequest {
   email: string;
@@ -23,6 +23,8 @@ class AuthenticateUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+    @inject('HashProvider')
+    private hashProvider: IHashProvides,
   ) {}
   public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
@@ -31,7 +33,10 @@ class AuthenticateUserService {
       throw new AppError('Incorrect infos.', 401);
     }
 
-    const passwordMatched = await compare(password, user.password);
+    const passwordMatched = await this.hashProvider.compareHash(
+      password,
+      user.password,
+    );
 
     if (!passwordMatched) {
       throw new AppError('Incorrect infos.', 401);
