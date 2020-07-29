@@ -6,6 +6,7 @@
     "rootDir": "./src",
     "strict": true,
     "strictPropertyInitialization": false,
+    "allowJs": true,
     "baseUrl": "./",
     "paths": {
       "@modules/*": ["src/modules/*"],

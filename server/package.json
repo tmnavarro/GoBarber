@@ -15,6 +15,7 @@
     "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.6",
     "@types/express": "4.17.7",
+    "@types/hapi__joi": "^17.1.4",
     "@types/jest": "^26.0.6",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongodb": "^3.5.25",
@@ -36,9 +37,13 @@
     "typescript": "^3.9.6"
   },
   "dependencies": {
+    "aws-sdk": "^2.722.0",
     "bcrypt": "^5.0.0",
+    "celebrate": "^12.1.2",
+    "class-transformer": "^0.2.3",
     "cors": "^2.8.5",
     "date-fns": "^2.14.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "handlebars": "^4.7.6",
