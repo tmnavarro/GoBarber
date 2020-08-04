@@ -8,7 +8,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=docker
       - TZ=GMT
-    # volumes:
-    #   - './data/postgres:/var/lib/postgresql/data'
+    volumes:
+      - './dockerdatabases/postgres:/var/lib/postgresql/data'
     ports:
       - 5432:5432
+
+  gb_redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
