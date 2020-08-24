@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
-import backgroundImg from '../assets/images/sign-in-background.png';
+import backgroundImg from '../../assets/images/sign-in-background.png';
 
 export const Container = styled.div`
   min-height: 100vh;
