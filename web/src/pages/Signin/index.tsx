@@ -1,12 +1,20 @@
-import React, { useCallback, useRef, useContext } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
+import { Link, useHistory } from 'react-router-dom';
 
-import { Container, Content, Background } from './styles';
+import {
+  Container,
+  Content,
+  Background,
+  AnimationContainer,
+} from './styles';
 
-import { AuthContext } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/Auth';
+import { useToast } from '../../hooks/Toast';
+
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import Button from '../../components/Button';
@@ -20,52 +28,79 @@ interface SignInFormData {
 }
 
 const SingIn: React.FC = () => {
+  const history = useHistory();
+
   const formRef = useRef<FormHandles>(null);
-  const { signIn } = useContext(AuthContext);
+  const { signIn } = useAuth();
+  const { addToast } = useToast();
 
   const handleSumit = useCallback(
     async (data: SignInFormData) => {
       try {
         formRef.current?.setErrors({});
         const schema = Yup.object().shape({
-          email: Yup.string().required('Email obrigatório').email('Digite um email válido'),
+          email: Yup.string()
+            .required('Email obrigatório')
+            .email('Digite um email válido'),
           password: Yup.string().required('Senha obrigatória'),
         });
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        signIn({
+        await signIn({
           email: data.email,
           password: data.password,
         });
+        history.push('/dashboard');
       } catch (error) {
-        const erros = getValidationErrors(error);
-        formRef.current?.setErrors(erros);
+        if (error instanceof Yup.ValidationError) {
+          const erros = getValidationErrors(error);
+          formRef.current?.setErrors(erros);
+          return;
+        }
+        addToast({
+          type: 'error',
+          title: 'Erro na autenticação',
+          description:
+            'Ocorreu um erro fazer login, cheque as credênciais',
+        });
       }
     },
-    [signIn]
+    [signIn, addToast]
   );
 
   return (
     <Container>
       <Content>
-        <img src={logoImg} alt="GoBarber" />
+        <AnimationContainer>
+          <img src={logoImg} alt="GoBarber" />
 
-        <Form ref={formRef} onSubmit={handleSumit}>
-          <h1>Faça seu login</h1>
-          <Input icon={FiMail} name="email" type="email" placeholder="Email" />
-          <Input icon={FiLock} name="password" type="password" placeholder="Senha" />
+          <Form ref={formRef} onSubmit={handleSumit}>
+            <h1>Faça seu login</h1>
+            <Input
+              icon={FiMail}
+              name="email"
+              type="email"
+              placeholder="Email"
+            />
+            <Input
+              icon={FiLock}
+              name="password"
+              type="password"
+              placeholder="Senha"
+            />
 
-          <Button type="submit">Entrar</Button>
+            <Button type="submit">Entrar</Button>
 
-          <a href="">Esqueci minha senha</a>
-        </Form>
+            <Link to="/signup">Esqueci minha senha</Link>
+          </Form>
 
-        <a href="#">
-          <FiLogIn />
-          Criar conta
-        </a>
+          <Link to="/signup">
+            <FiLogIn />
+            Criar conta
+          </Link>
+        </AnimationContainer>
       </Content>
       <Background />
     </Container>
