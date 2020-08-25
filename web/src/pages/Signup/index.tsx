@@ -103,7 +103,7 @@ const SingUp: React.FC = () => {
 
             <Button type="submit">Cadastrar</Button>
 
-            <a href="">Esqueci minha senha</a>
+            <Link to="/forgot-password">Esqueci minha senha</Link>
           </Form>
 
           <Link to="/">
