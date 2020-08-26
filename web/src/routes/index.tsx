@@ -8,6 +8,7 @@ import Signup from '../pages/Signup';
 import Dashboard from '../pages/Dashboard';
 import ForgotPasword from '../pages/ForgotPasword';
 import ResetPasword from '../pages/ResetPasword';
+import Profile from '../pages/Profile';
 
 const Routes: React.FC = () => {
   return (
@@ -29,6 +30,7 @@ const Routes: React.FC = () => {
         path="/dashboard"
         component={Dashboard}
       />
+      <Route isPrivate={true} path="/profile" component={Profile} />
     </Switch>
   );
 };

@@ -54,7 +54,7 @@ const SingUp: React.FC = () => {
 
       addToast({
         type: 'success',
-        title: 'Cadastri realizando!',
+        title: 'Cadastro realizando!',
         description: 'Você já pode acessar o sistema',
       });
       history.push('/');
