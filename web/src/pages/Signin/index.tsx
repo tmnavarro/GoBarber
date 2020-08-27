@@ -82,7 +82,7 @@ const SingIn: React.FC = () => {
               icon={FiMail}
               name="email"
               type="email"
-              placeholder="Email"
+              placeholder="E-mail"
             />
             <Input
               icon={FiLock}
